@@ -27,6 +27,12 @@ main(async () => {
   const wallet = args._[0];
   if (args.help || !wallet) { console.log(HELP); process.exit(args.help ? 0 : 1); }
   if (!isAddress(wallet)) throw new Error(`"${wallet}" is not a Solana address.`);
+  if (args.top !== undefined) {
+    const top = Number(args.top);
+    if (args.top === "" || args.top === true || !Number.isInteger(top) || top < 1) {
+      throw new Error("--top must be a whole number of 1 or more");
+    }
+  }
   const want = Math.max(10, Math.min(1000, Number(args.txs) || 100));
   const tty = process.stderr.isTTY && !args.json;
 
